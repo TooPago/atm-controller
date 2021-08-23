@@ -7,5 +7,6 @@
 void setupLeds(void);
 void powerONLed(int led);
 void powerOFFLed(int led);
+void readSerialLeds();
 
 #endif

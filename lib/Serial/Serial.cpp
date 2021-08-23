@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "Serial.h"
+#include "Globals.h"
 #include "Leds.h"
 
 void SerialRead()
@@ -15,7 +16,7 @@ void SerialRead()
     }
 
     if(inStringSerial != ""){
-
+        readSerialLeds();
     }
 
 }
