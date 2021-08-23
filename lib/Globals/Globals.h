@@ -11,4 +11,7 @@ extern int led_FACE;
 extern int led_DISPENSER;
 extern int led_ACCEPTOR;
 
+/*Serial*/
+extern String inStringSerial;
+
 #endif

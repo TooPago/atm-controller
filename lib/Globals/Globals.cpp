@@ -8,3 +8,7 @@ int led_NONE = 34;
 int led_FACE = 25;
 int led_DISPENSER = 26;
 int led_ACCEPTOR = 27;
+
+
+/*Serial*/
+String inStringSerial = "";
