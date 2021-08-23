@@ -1,9 +1,9 @@
 #include <Arduino.h>
+#include <SoftwareSerial.h>
+#include "Leds.h"
 
 void setup() {
-  // put your setup code here, to run once:
+  setupLeds();
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-}
+void loop() {}
