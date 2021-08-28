@@ -6,12 +6,29 @@
 /*Leds*/
 extern int led_QR_LEFT;
 extern int led_QR_RIGHT;
-extern int led_NONE;
 extern int led_FACE;
 extern int led_DISPENSER;
 extern int led_ACCEPTOR;
 
 /*Serial*/
-extern String inStringSerial;
+extern byte byteCommand;
+extern byte byteAction;
+extern int countByte;
+extern unsigned long LAST_STATUS;
+extern bool CHECK_STATUS;
+extern bool debug;
+
+/*Coin Acceptor*/
+extern int pinCoinAcceptor;
+extern unsigned long LASTIMPULSE;
+extern int PULSES;
+extern bool acceptCoin;
+extern const int timeLimitPulsesCoin;
+extern const int timeDelayPulsesCoin;
+
+/*Reset*/
+extern int pin_reset;
+extern unsigned long LASTRESET;
+extern const int timeReset;
 
 #endif

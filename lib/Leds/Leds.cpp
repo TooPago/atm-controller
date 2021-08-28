@@ -1,12 +1,12 @@
 #include <Arduino.h>
 #include "Globals.h"
+#include "Write.h"
 #include "Leds.h"
 
 void setupLeds()
 {
     pinMode(led_QR_LEFT, OUTPUT);
     pinMode(led_QR_RIGHT, OUTPUT);
-    pinMode(led_NONE, OUTPUT);
     pinMode(led_FACE, OUTPUT);
     pinMode(led_DISPENSER, OUTPUT);
     pinMode(led_ACCEPTOR, OUTPUT);
@@ -24,117 +24,91 @@ void powerOFFLed(int led)
 
 void readSerialLeds()
 {
-    if (inStringSerial != "")
+    if (byteCommand == 0x8A)
     {
         bool check = false;
-        if (inStringSerial == "A")
-        {
-            powerONLed(led_QR_LEFT);
-            check = true;
-        }
-        else if (inStringSerial == "B")
-        {
-            powerOFFLed(led_QR_LEFT);
-            check = true;
-        }
-        else if (inStringSerial == "C")
-        {
-            powerONLed(led_QR_RIGHT);
-            check = true;
-        }
-        else if (inStringSerial == "D")
-        {
-            powerOFFLed(led_QR_RIGHT);
-            check = true;
-        }
-        else if (inStringSerial == "E")
+        if (byteAction == 0x80)
         {
             powerONLed(led_QR_LEFT);
             powerONLed(led_QR_RIGHT);
             check = true;
         }
-        else if (inStringSerial == "F")
+        else if (byteAction == 0x81)
         {
             powerOFFLed(led_QR_LEFT);
             powerOFFLed(led_QR_RIGHT);
             check = true;
         }
-        else if (inStringSerial == "E")
-        {
-            powerONLed(led_QR_LEFT);
-            powerONLed(led_QR_RIGHT);
-            check = true;
-        }
-        else if (inStringSerial == "F")
-        {
-            powerOFFLed(led_QR_LEFT);
-            powerOFFLed(led_QR_RIGHT);
-            check = true;
-        }
-        else if (inStringSerial == "G")
+        else if (byteAction == 0x82)
         {
             powerONLed(led_FACE);
             check = true;
         }
-        else if (inStringSerial == "H")
+        else if (byteAction == 0x83)
         {
             powerOFFLed(led_FACE);
             check = true;
         }
-        else if (inStringSerial == "I")
+        else if (byteAction == 0x84)
         {
             powerONLed(led_DISPENSER);
             check = true;
         }
-        else if (inStringSerial == "J")
+        else if (byteAction == 0x85)
         {
             powerOFFLed(led_DISPENSER);
             check = true;
         }
-        else if (inStringSerial == "K")
+        else if (byteAction == 0x86)
         {
             powerONLed(led_ACCEPTOR);
             check = true;
         }
-        else if (inStringSerial == "L")
+        else if (byteAction == 0x87)
         {
             powerOFFLed(led_ACCEPTOR);
             check = true;
         }
-        else if (inStringSerial == "M")
-        {
-            powerONLed(led_NONE);
-            check = true;
-        }
-        else if (inStringSerial == "N")
-        {
-            powerOFFLed(led_NONE);
-            check = true;
-        }
-        else if (inStringSerial == "O")
+        else if (byteAction == 0x88)
         {
             powerONLed(led_QR_LEFT);
             powerONLed(led_QR_RIGHT);
-            powerONLed(led_NONE);
             powerONLed(led_FACE);
             powerONLed(led_DISPENSER);
             powerONLed(led_ACCEPTOR);
             check = true;
         }
-        else if (inStringSerial == "P")
+        else if (byteAction == 0x89)
         {
             powerOFFLed(led_QR_LEFT);
             powerOFFLed(led_QR_RIGHT);
-            powerOFFLed(led_NONE);
             powerOFFLed(led_FACE);
             powerOFFLed(led_DISPENSER);
             powerOFFLed(led_ACCEPTOR);
             check = true;
         }
 
-        if(check){
-            Serial.write("Action Leds");
+        if (check)
+        {
+            write(0x8A);
         }
-
     }
+}
+
+void restartLeds()
+{
+    powerOFFLed(led_QR_LEFT);
+    powerOFFLed(led_QR_RIGHT);
+    powerOFFLed(led_FACE);
+    powerOFFLed(led_DISPENSER);
+    powerOFFLed(led_ACCEPTOR);
+}
+
+void OnAllLeds()
+{
+    powerONLed(led_QR_LEFT);
+    powerONLed(led_QR_RIGHT);
+    powerONLed(led_FACE);
+    powerONLed(led_DISPENSER);
+    powerONLed(led_ACCEPTOR);
 }
