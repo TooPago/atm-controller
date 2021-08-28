@@ -14,7 +14,7 @@ byte byteAction = 0x00;
 int countByte = 0;
 unsigned long LAST_STATUS = millis();
 bool CHECK_STATUS = true;
-bool debug = true;
+bool debug = false;
 
 /*Coin Acceptor*/
 int pinCoinAcceptor = 21;
@@ -28,3 +28,7 @@ const int timeDelayPulsesCoin = 100;
 int pin_reset = 5;
 unsigned long LASTRESET = 0;
 const int timeReset = 5000;
+
+/*TP11*/
+int RX_TP11 = 13;
+int TX_TP11 = 22;

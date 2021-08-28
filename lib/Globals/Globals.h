@@ -31,4 +31,8 @@ extern int pin_reset;
 extern unsigned long LASTRESET;
 extern const int timeReset;
 
+/*TP11*/
+extern int RX_TP11;
+extern int TX_TP11;
+
 #endif

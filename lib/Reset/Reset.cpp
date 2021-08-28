@@ -4,6 +4,7 @@
 #include "Leds.h"
 #include "Status.h"
 #include "CoinAcceptor.h"
+#include "TP11.h"
 
 void setupReset()
 {
@@ -15,6 +16,7 @@ void Reset()
     restartLeds();
     restartStatus();
     restartCoinAcceptor();
+    restartTP11();
     delay(300);
 }
 

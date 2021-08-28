@@ -6,6 +6,7 @@
 #include "Serial.h"
 #include "Status.h"
 #include "Reset.h"
+#include "TP11.h"
 //#include "Bluetooth.h"
 
 void setup()
@@ -14,6 +15,7 @@ void setup()
   setupLeds();
   setupCoinAcceptor();
   setupReset();
+  setupTP11();
   //setupBluetooth();
   restartLeds();
   restartCoinAcceptor();

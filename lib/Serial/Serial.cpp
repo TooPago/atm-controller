@@ -6,6 +6,7 @@
 #include "CoinAcceptor.h"
 #include "Status.h"
 #include "Reset.h"
+#include "TP11.h"
 //#include "Bluetooth.h"
 
 void SerialRead()
@@ -46,11 +47,13 @@ void SerialRead()
         loopSerialCoinAcceptor();
         readSerialStatus();
         serialReset();
+        readSerialTP11();
     }
 
     loopCoinAcceptor();
     loopStatus();
     loopReset();
+    readTP11();
 
     delay(10);
 }
