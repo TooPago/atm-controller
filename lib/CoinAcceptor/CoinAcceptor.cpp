@@ -73,7 +73,7 @@ void coins_inserted()
 
     if (byteCoin != 0x00)
     {
-        write(byteCoin);
+        write(0x7A, byteCoin);
     }
 
     PULSES = 0;
@@ -86,12 +86,12 @@ void loopSerialCoinAcceptor()
         if (byteAction == 0x70)
         {
             startCoinAcceptor();
-            write(0x70);
+            write(0x7A, 0x70);
         }
         else if (byteAction == 0x71)
         {
             finishCoinAcceptor();
-            write(0x71);
+            write(0x7A, 0x71);
         }
     }
 }

@@ -262,7 +262,7 @@ void hopper_event()
 
         if (lastPulseHopper != PULSESHOPPER)
         {
-            write(0x3C);
+            write(0x3A, 0x30);
         }
     }
 }
@@ -274,13 +274,13 @@ void readSerialHopper()
         if (byteAction == 0x3A)
         {
             finishHopper();
-            write(0x3B);
+            write(0x3A, 0x3B);
         }
         else
         {
             numCoinsHopper = totalCoins(byteAction);
             startHopper();
-            write(0x3A);
+            write(0x3A, 0x3A);
         }
     }
 }
@@ -300,7 +300,7 @@ void loopHopper()
             hopperCoin = false;
             delay(50);
             finishHopper();
-            write(0x3B);
+            write(0x3A, 0x3B);
         }
     }
 }

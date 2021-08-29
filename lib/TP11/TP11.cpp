@@ -34,7 +34,7 @@ void readTP11()
             byte byteSerial = SerialTP11.read();
             if (byteSerial != 0x80 && byteSerial != 0x81)
             {
-                write(byteSerial);
+                write(0x4A, byteSerial);
             }
         }
     }

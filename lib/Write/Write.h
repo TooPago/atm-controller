@@ -3,6 +3,6 @@
 
 #include <Arduino.h>
 
-void write(byte _send);
+void write(byte _device, byte _command);
 
 #endif

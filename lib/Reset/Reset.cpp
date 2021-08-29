@@ -43,7 +43,7 @@ void loopReset()
         }
         if ((millis() - LASTRESET) >= timeReset)
         {
-            write(0x5A);
+            write(0x5A, 0x5A);
             Reset();
         }
         LASTRESET = 0;
@@ -54,7 +54,7 @@ void serialReset()
 {
     if (byteCommand == 0x5A && byteAction == 0x50)
     {
-        write(0x5A);
+        write(0x5A, 0x5A);
         Reset();
         delay(2000);
     }

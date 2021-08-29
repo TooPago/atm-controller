@@ -90,7 +90,7 @@ void readSerialLeds()
 
         if (check)
         {
-            write(0x8A);
+            write(0x8A, 0x8A);
         }
     }
 }

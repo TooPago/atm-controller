@@ -35,8 +35,7 @@ void SerialRead()
 
             if (debug == true)
             {
-                write(byteSerial);
-                write(byteAction);
+                write(byteSerial, byteAction);
             }
         }
     }

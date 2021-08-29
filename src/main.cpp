@@ -23,7 +23,7 @@ void setup()
   restartCoinAcceptor();
   restartStatus();
   restartHopper();
-  write(0x0A);
+  write(0x0A, 0x0A);
 }
 
 void loop()

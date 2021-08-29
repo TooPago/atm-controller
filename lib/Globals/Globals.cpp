@@ -39,6 +39,6 @@ int relayHopper = 33;
 unsigned long LASTIMPULSEHOPPER = 0;
 int PULSESHOPPER = 0;
 bool hopperCoin = false;
-int timeLimitPulsesHopper = 500;
+int timeLimitPulsesHopper = 150;
 int numCoinsHopper = 0;
 int timeWaitHopper = 30000;

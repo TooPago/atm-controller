@@ -25,7 +25,7 @@ void loopStatus()
     if ((millis() - LAST_STATUS) >= 2000 && CHECK_STATUS == true)
     {
         LAST_STATUS = millis();
-        write(0x0A);
+        write(0x0A, 0x0A);
     }
 }
 
