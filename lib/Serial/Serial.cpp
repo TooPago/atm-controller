@@ -8,7 +8,7 @@
 #include "Reset.h"
 #include "TP11.h"
 #include "Hopper.h"
-//#include "Bluetooth.h"
+#include "Bluetooth.h"
 
 void SerialRead()
 {
@@ -40,10 +40,20 @@ void SerialRead()
         }
     }
 
-    //loopReadBluetooth();
-
     if (byteCommand != 0x00 && byteAction != 0x00)
     {
+        readSerialLeds();
+        loopSerialCoinAcceptor();
+        readSerialStatus();
+        serialReset();
+        readSerialTP11();
+        readSerialHopper();
+    }
+
+    if (byteCommandBLE != 0x00 && byteActionBLE != 0x00)
+    {
+        byteCommand = byteCommandBLE;
+        byteAction = byteActionBLE;
         readSerialLeds();
         loopSerialCoinAcceptor();
         readSerialStatus();
@@ -57,6 +67,13 @@ void SerialRead()
     loopReset();
     readTP11();
     loopHopper();
+    loopReadBluetooth();
+
+    if (byteCommandBLE != 0x00 && byteActionBLE != 0x00)
+    {
+        byteCommandBLE = 0x00;
+        byteActionBLE = 0x00;
+    }
 
     delay(10);
 }

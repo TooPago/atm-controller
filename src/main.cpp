@@ -8,7 +8,7 @@
 #include "Reset.h"
 #include "TP11.h"
 #include "Hopper.h"
-//#include "Bluetooth.h"
+#include "Bluetooth.h"
 
 void setup()
 {
@@ -18,7 +18,7 @@ void setup()
   setupReset();
   setupTP11();
   setupHopper();
-  //setupBluetooth();
+  setupBluetooth();
   restartLeds();
   restartCoinAcceptor();
   restartStatus();

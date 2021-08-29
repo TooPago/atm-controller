@@ -13,6 +13,8 @@ extern int led_ACCEPTOR;
 /*Serial*/
 extern byte byteCommand;
 extern byte byteAction;
+extern byte byteCommandBLE;
+extern byte byteActionBLE;
 extern int countByte;
 extern unsigned long LAST_STATUS;
 extern bool CHECK_STATUS;
@@ -44,5 +46,9 @@ extern bool hopperCoin;
 extern int timeLimitPulsesHopper;
 extern int numCoinsHopper;
 extern int timeWaitHopper;
+
+/*BLUETOOTH*/
+extern std::string nameBluetooth;
+extern uint32_t pinBluetooth;
 
 #endif

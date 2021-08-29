@@ -11,6 +11,8 @@ int led_ACCEPTOR = 27;
 /*Serial*/
 byte byteCommand = 0x00;
 byte byteAction = 0x00;
+byte byteCommandBLE = 0x00;
+byte byteActionBLE = 0x00;
 int countByte = 0;
 unsigned long LAST_STATUS = millis();
 bool CHECK_STATUS = true;
@@ -42,3 +44,7 @@ bool hopperCoin = false;
 int timeLimitPulsesHopper = 150;
 int numCoinsHopper = 0;
 int timeWaitHopper = 30000;
+
+/*BLUETOOTH*/
+std::string nameBluetooth = "ATM Controller";
+uint32_t pinBluetooth = 999999;
