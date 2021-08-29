@@ -32,3 +32,13 @@ const int timeReset = 5000;
 /*TP11*/
 int RX_TP11 = 13;
 int TX_TP11 = 22;
+
+/*Hopper*/
+int pinHopper = 32;
+int relayHopper = 33;
+unsigned long LASTIMPULSEHOPPER = 0;
+int PULSESHOPPER = 0;
+bool hopperCoin = false;
+int timeLimitPulsesHopper = 500;
+int numCoinsHopper = 0;
+int timeWaitHopper = 30000;

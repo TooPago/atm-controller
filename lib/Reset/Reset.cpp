@@ -5,6 +5,7 @@
 #include "Status.h"
 #include "CoinAcceptor.h"
 #include "TP11.h"
+#include "Hopper.h"
 
 void setupReset()
 {
@@ -17,6 +18,7 @@ void Reset()
     restartStatus();
     restartCoinAcceptor();
     restartTP11();
+    restartHopper();
     delay(300);
 }
 

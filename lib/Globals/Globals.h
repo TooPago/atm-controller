@@ -35,4 +35,14 @@ extern const int timeReset;
 extern int RX_TP11;
 extern int TX_TP11;
 
+/*Hopper*/
+extern int pinHopper;
+extern int relayHopper;
+extern unsigned long LASTIMPULSEHOPPER;
+extern int PULSESHOPPER;
+extern bool hopperCoin;
+extern int timeLimitPulsesHopper;
+extern int numCoinsHopper;
+extern int timeWaitHopper;
+
 #endif
