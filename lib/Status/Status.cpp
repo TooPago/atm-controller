@@ -11,11 +11,13 @@ void readSerialStatus()
         {
             CHECK_STATUS = true;
             LAST_STATUS = millis();
+            write(0x6A, 0x60);
         }
         else if (byteAction == 0x61)
         {
             CHECK_STATUS = false;
             LAST_STATUS = millis();
+            write(0x6A, 0x61);
         }
     }
 }
