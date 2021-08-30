@@ -48,3 +48,4 @@ int timeWaitHopper = 30000;
 /*BLUETOOTH*/
 std::string nameBluetooth = "ATM Controller";
 uint32_t pinBluetooth = 999999;
+int JUMPER_BLUETOOTH = 4;

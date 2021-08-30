@@ -50,5 +50,6 @@ extern int timeWaitHopper;
 /*BLUETOOTH*/
 extern std::string nameBluetooth;
 extern uint32_t pinBluetooth;
+extern int JUMPER_BLUETOOTH;
 
 #endif

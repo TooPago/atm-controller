@@ -13,6 +13,7 @@ extern BLECharacteristic *pTxCharacteristic;
 extern bool deviceConnected;
 extern bool rx_received;
 extern std::string rxValue;
+extern bool statusSetup;
 
 #define SERVICE_UUID "0000FFE0-0000-1000-8000-00805F9B34FB"
 #define CHARACTERISTIC_UUID_RX "0000FFE1-0000-1000-8000-00805F9B34FB"

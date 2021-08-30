@@ -12,6 +12,7 @@ BLECharacteristic *pTxCharacteristic;
 bool deviceConnected = false;
 bool rx_received = false;
 std::string rxValue;
+bool statusSetup = false;
 
 class MyServerCallbacks : public BLEServerCallbacks
 {
@@ -101,21 +102,30 @@ void initBluetooth()
     esp_ble_gap_set_security_param(ESP_BLE_SM_ONLY_ACCEPT_SPECIFIED_SEC_AUTH, &auth_option, sizeof(uint8_t));
     pSecurity->setInitEncryptionKey(ESP_BLE_ENC_KEY_MASK | ESP_BLE_ID_KEY_MASK);
     esp_ble_gap_set_security_param(ESP_BLE_SM_SET_RSP_KEY, &rsp_key, sizeof(uint8_t));
+    statusSetup = true;
 }
 
 void setupBluetooth()
 {
-    initBluetooth();
+    pinMode(JUMPER_BLUETOOTH, INPUT_PULLUP);
 }
 
 void loopReadBluetooth()
 {
-    BLE_read();
+    if (digitalRead(JUMPER_BLUETOOTH) == LOW && statusSetup == false)
+    {
+        initBluetooth();
+        delay(3000);
+    }
+    if (digitalRead(JUMPER_BLUETOOTH) == LOW)
+    {
+        BLE_read();
+    }
 }
 
 void writeBluetooth(byte _device, byte _command)
 {
-    if (deviceConnected == true)
+    if (deviceConnected == true && digitalRead(JUMPER_BLUETOOTH) == LOW)
     {
         byte msg[2];
         msg[0] = _device;
