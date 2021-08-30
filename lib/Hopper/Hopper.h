@@ -11,6 +11,5 @@ void startHopper();
 void finishHopper();
 void hopper_event();
 void restartHopper();
-int totalCoins(byte _total);
 
 #endif
