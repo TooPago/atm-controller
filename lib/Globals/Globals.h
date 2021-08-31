@@ -52,4 +52,8 @@ extern std::string nameBluetooth;
 extern uint32_t pinBluetooth;
 extern int JUMPER_BLUETOOTH;
 
+/*XC100*/
+extern int RX_XC100;
+extern int TX_XC100;
+
 #endif

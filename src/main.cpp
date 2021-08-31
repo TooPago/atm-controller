@@ -9,6 +9,7 @@
 #include "TP11.h"
 #include "Hopper.h"
 #include "Bluetooth.h"
+#include "XC100.h"
 
 void setup()
 {
@@ -19,10 +20,13 @@ void setup()
   setupTP11();
   setupHopper();
   setupBluetooth();
+  setupXC100();
   restartLeds();
   restartCoinAcceptor();
   restartStatus();
   restartHopper();
+  restartXC100();
+  LAST_STATUS = millis();
   write(0x0A, 0x0A);
 }
 
