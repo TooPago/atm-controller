@@ -55,5 +55,6 @@ extern int JUMPER_BLUETOOTH;
 /*XC100*/
 extern int RX_XC100;
 extern int TX_XC100;
+extern bool autoDispenser;
 
 #endif

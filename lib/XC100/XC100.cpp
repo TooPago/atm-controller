@@ -15,6 +15,13 @@ byte response[11];
 uint countResponse = 0;
 byte totalByteDispensed = 0x00;
 
+bool errorDispensed = false;
+uint countErrors = 0;
+uint countDispensed = 0;
+uint totalToBeDispensed = 0;
+uint countAttempts = 0;
+byte totalByteDispensedWithError = 0x00;
+
 byte *createPayload(byte b0, byte b1, byte b2, byte b3, byte b4, byte b5, byte b6, byte b7, byte b8, byte b9)
 {
     byte *payload = new byte[10];
@@ -71,10 +78,18 @@ uint8_t cs = calculateCS(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
 
 void reloadXC100()
 {
+
     powerOFFLed(led_DISPENSER);
     statusDispensed = false;
     clearDispensed = 1;
     totalByteDispensed = 0x00;
+    errorDispensed = false;
+    countDispensed = 0;
+    totalToBeDispensed = 0;
+    countErrors = 0;
+    countAttempts = 0;
+    autoDispenser = false;
+    totalByteDispensedWithError = 0x00;
     SerialXC100.write(clearErrorAndCount, 10);
     SerialXC100.write(clearErrorRecord, 10);
 }
@@ -82,6 +97,7 @@ void reloadXC100()
 void setupXC100()
 {
     SerialXC100.begin(9600, SWSERIAL_8N1, RX_XC100, TX_XC100, false, 256);
+    SerialXC100.flush();
 }
 
 void readXC100()
@@ -122,6 +138,10 @@ void readXC100()
 
                 if (byteSerial == 0x06)
                 {
+                    if (statusDispensed == true && errorDispensed == true)
+                    {
+                        countErrors++;
+                    }
                     break;
                 }
                 if (byteSerial == 0x03)
@@ -147,7 +167,9 @@ void readXC100()
 
         if (statusDispensed == true && response[3] == 0x62)
         {
-            byte *total = totalBills(totalByteDispensed);
+            SerialXC100.flush();
+
+            byte *total = totalBills(totalByteDispensedWithError);
 
             if (total[0] == response[5] && total[1] == response[6] && total[2] == response[7])
             {
@@ -155,21 +177,125 @@ void readXC100()
                 statusDispensed = false;
                 clearDispensed = 1;
                 totalByteDispensed = 0x00;
+                errorDispensed = false;
+                countDispensed = 0;
+                totalToBeDispensed = 0;
+                countErrors = 0;
+                countAttempts = 0;
+                totalByteDispensedWithError = 0x00;
+                autoDispenser = false;
                 write(0x2A, 0x2B);
                 SerialXC100.write(clearErrorAndCount, 10);
                 SerialXC100.write(clearErrorRecord, 10);
             }
 
-            if (total[0] != response[5] || total[1] != response[6] || total[2] != response[7])
+            if (autoDispenser == false)
             {
-                powerOFFLed(led_DISPENSER);
-                statusDispensed = false;
-                clearDispensed = 1;
-                totalByteDispensed = 0x00;
-                byte billsDispensed = totalByteDispensedCheck(checkCoinsDispensed(response[5], response[6], response[7]));
-                write(0x2C, billsDispensed);
-                SerialXC100.write(clearErrorAndCount, 10);
+                if (total[0] != response[5] || total[1] != response[6] || total[2] != response[7])
+                {
+                    powerOFFLed(led_DISPENSER);
+                    statusDispensed = false;
+                    clearDispensed = 1;
+                    totalByteDispensed = 0x00;
+                    errorDispensed = false;
+                    countDispensed = 0;
+                    totalToBeDispensed = 0;
+                    countErrors = 0;
+                    countAttempts = 0;
+                    autoDispenser = false;
+                    totalByteDispensedWithError = 0x00;
+                    byte billsDispensed = totalByteDispensedCheck(checkCoinsDispensed(response[5], response[6], response[7]));
+                    write(0x2C, billsDispensed);
+                    SerialXC100.write(clearError, 10);
+                    SerialXC100.write(clearErrorRecord, 10);
+                }
+            }
+            else
+            {
+                if (total[0] != response[5] || total[1] != response[6] || total[2] != response[7])
+                {
+
+                    uint countDispensedLast = countDispensed;
+                    uint countDispensedNew = countDispensed + checkCoinsDispensed(response[5], response[6], response[7]);
+
+                    if (countDispensedLast < countDispensedNew)
+                    {
+                        countDispensed = countDispensedNew;
+                    }
+
+                    byte billsDispensed = totalByteDispensedCheck(countDispensed);
+
+                    countErrors = 0;
+                    errorDispensed = true;
+                    countAttempts++;
+
+                    if (countAttempts >= 10)
+                    {
+                        powerOFFLed(led_DISPENSER);
+                        statusDispensed = false;
+                        clearDispensed = 1;
+                        totalByteDispensed = 0x00;
+                        errorDispensed = false;
+                        countDispensed = 0;
+                        totalToBeDispensed = 0;
+                        countErrors = 0;
+                        countAttempts = 0;
+                        totalByteDispensedWithError = 0x00;
+                        autoDispenser = false;
+                        write(0x2C, billsDispensed);
+                        SerialXC100.write(clearErrorAndCount, 10);
+                        SerialXC100.write(clearErrorRecord, 10);
+                    }
+                    else
+                    {
+                        SerialXC100.write(clearError, 10);
+                    }
+                }
+            }
+        }
+
+        if (autoDispenser == true)
+        {
+
+            if (statusDispensed == true && errorDispensed == true && countErrors == 1 && response[0] == 0x06)
+            {
                 SerialXC100.write(clearErrorRecord, 10);
+            }
+
+            if (statusDispensed == true && errorDispensed == true && countErrors == 2 && response[0] == 0x06)
+            {
+                SerialXC100.write(powerfulOutBill, 10);
+            }
+
+            if (statusDispensed == true && errorDispensed == true && countErrors == 3 && response[0] == 0x06)
+            {
+                countErrors = 0;
+
+                if (countAttempts >= 3)
+                {
+                    countDispensed += 2;
+                }
+                else if (countAttempts >= 2)
+                {
+                    countDispensed += 1;
+                }
+                else if (countAttempts == 1)
+                {
+                    countDispensed += 1;
+                }
+                else
+                {
+                    countDispensed += 1;
+                }
+
+                byte *total = totalBillsWithError(totalToBeDispensed - countDispensed);
+                totalByteDispensedWithError = totalByteDispensedCheck(totalToBeDispensed - countDispensed);
+
+                cs = calculateCS(0x02, 0x30, 0x30, 0x42, 0x30, total[0], total[1], total[2]);
+                byte *commandDispensed = createPayload(0x02, 0x30, 0x30, 0x42, 0x30, total[0], total[1], total[2], cs, 0x03);
+
+                SerialXC100.flush();
+                SerialXC100.write(commandDispensed, 10);
             }
         }
     }
@@ -229,8 +355,17 @@ void readSerialXC100()
             SerialXC100.write(powerfulOutBill, 10);
         }
     }
-    else if (byteCommand == 0x2B)
+    else if (byteCommand == 0x2B || byteCommand == 0x2C)
     {
+        if (byteCommand == 0x2B)
+        {
+            autoDispenser = false;
+        }
+        else if (byteCommand == 0x2C)
+        {
+            autoDispenser = true;
+        }
+
         byte *total = totalBills(byteAction);
 
         if (total[0] != 0x30 || total[1] != 0x30 || total[2] != 0x30)
@@ -239,6 +374,11 @@ void readSerialXC100()
             statusDispensed = true;
             clearDispensed = 0;
             totalByteDispensed = byteAction;
+            errorDispensed = false;
+            totalToBeDispensed = totalCoins(byteAction);
+            countErrors = 0;
+            countAttempts = 0;
+            totalByteDispensedWithError = byteAction;
 
             cs = calculateCS(0x02, 0x30, 0x30, 0x42, 0x30, total[0], total[1], total[2]);
             byte *commandDispensed = createPayload(0x02, 0x30, 0x30, 0x42, 0x30, total[0], total[1], total[2], cs, 0x03);

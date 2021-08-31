@@ -53,3 +53,4 @@ int JUMPER_BLUETOOTH = 4;
 /*XC100*/
 int RX_XC100 = 18;
 int TX_XC100 = 19;
+bool autoDispenser = false;
